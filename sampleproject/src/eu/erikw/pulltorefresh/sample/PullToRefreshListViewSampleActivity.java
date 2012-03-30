@@ -1,12 +1,13 @@
 package eu.erikw.pulltorefresh.sample;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.animation.*;
 import android.widget.ArrayAdapter;
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
+
+import java.util.ArrayList;
 
 public class PullToRefreshListViewSampleActivity extends Activity {
     
@@ -72,5 +73,17 @@ public class PullToRefreshListViewSampleActivity extends Activity {
         
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, items);
         listView.setAdapter(adapter);
+
+        AnimationSet set = new AnimationSet(true);
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.50f, Animation.RELATIVE_TO_SELF, 0.50f);
+        scaleAnimation.setDuration(1000);
+        set.addAnimation(scaleAnimation);
+        RotateAnimation rotateAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setRepeatMode(Animation.REVERSE);
+        rotateAnimation.setDuration(1000);
+        set.addAnimation(rotateAnimation);
+
+        listView.setLayoutAnimation(new LayoutAnimationController(set, 0.25f));
     }
 }
